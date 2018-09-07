@@ -13,6 +13,13 @@
     <body>
     <h1 class="text-muted text-center">Welcome to the Chat App</h1>
 
+      <ol id="messages"></ol>
+      
+      <form id="message-form">
+        <input id="message-input" name="message" type="text" placeholder="Message"/>
+        <button>Send</button>
+      </form>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/index.js"></script>
     </body>
