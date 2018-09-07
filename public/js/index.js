@@ -1,5 +1,17 @@
 const socket = io()
 
+let newMessageHeight = 0
+const scrollToBottom = () => {
+    const messages = document.querySelector('#messages')
+    const newMessage = messages.lastElementChild
+    const {clientHeight, scrollTop, scrollHeight} = messages
+    const prevMessageHeight = newMessageHeight
+    newMessageHeight = parseInt(window.getComputedStyle(newMessage).getPropertyValue('height'))
+    if(clientHeight + scrollTop + newMessageHeight + prevMessageHeight >= scrollHeight) {
+        messages.scrollTo(0, scrollHeight)
+    }
+}
+
 socket.on('connect', () => {
     console.log("Connected to the server")     
     
@@ -19,7 +31,7 @@ socket.on('newMessage', (message) => {
     })
 
     document.querySelector('#messages').innerHTML += html
-    
+    scrollToBottom()
 })
 
 socket.on('newLocationMessage', (message) => {
@@ -32,6 +44,7 @@ socket.on('newLocationMessage', (message) => {
     })
 
     document.querySelector('#messages').innerHTML += html
+    scrollToBottom()
 })
 
 document.querySelector('#message-form').addEventListener('submit', (e) => {
