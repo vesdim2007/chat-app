@@ -10,22 +10,28 @@ socket.on('disconnect', () => {
 })
 
 socket.on('newMessage', (message) => {
-    console.log("new message", message)
-    const messageEl = document.createElement('li')
-    messageEl.textContent = (`${message.from}: ${message.text}`)
-    document.querySelector('#messages').appendChild(messageEl)
+    const formattedTime = moment(message.createdAt).format('h:mm a')
+    const template = document.querySelector('#message-template').innerHTML
+    const html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    })
+
+    document.querySelector('#messages').innerHTML += html
+    
 })
 
 socket.on('newLocationMessage', (message) => {
-    const locationEl = document.createElement('li')
-    const mapEl = document.createElement('a')
-    const author = (`${message.from}: `)
-    mapEl.textContent = "My current location"
-    mapEl.setAttribute('href', message.url)
-    mapEl.setAttribute("target", "_blank")
-    locationEl.textContent = author
-    locationEl.appendChild(mapEl)
-    document.querySelector('#messages').appendChild(locationEl)
+    const formattedTime = moment(message.createdAt).format('h:mm a')
+    const template = document.querySelector('#location-template').innerHTML
+    const html = Mustache.render(template, {
+        url: message.url,
+        from: message.from,
+        createdAt: formattedTime
+    })
+
+    document.querySelector('#messages').innerHTML += html
 })
 
 document.querySelector('#message-form').addEventListener('submit', (e) => {
