@@ -39,9 +39,9 @@ document.querySelector('#message-form').addEventListener('submit', (e) => {
             from: "User",
             text           
         }, function() {
-
+            inputEl.value = ""
         })
-        inputEl.value = ""
+        
     }
     
 })
@@ -52,12 +52,16 @@ locationBtn.addEventListener('click', () => {
         return alert('Geolocation not supported by your browser.')
     }
 
+    locationBtn.setAttribute('disabled', true)
+
     navigator.geolocation.getCurrentPosition((position) => {
+        locationBtn.removeAttribute("disabled")
         socket.emit('createLocationMessage', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
         })
     }, () => {
+        locationBtn.removeAttribute("disabled")
         alert('Unable to fetch location')
-    })
+    })    
 })
