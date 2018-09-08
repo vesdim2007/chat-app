@@ -13,12 +13,34 @@ const scrollToBottom = () => {
 }
 
 socket.on('connect', () => {
-    console.log("Connected to the server")     
+    
+    const params = new URLSearchParams(window.location.search) 
+    const obj = {
+        name: params.get('name'),
+        room: params.get('room') 
+    }
+    
+    socket.emit('join', obj, function(err) {
+        
+        if(err) {
+            alert(err)
+            window.location.href='/'
+        } else {
+            console.log('No errors')
+        }
+    })
     
 })
 
-socket.on('disconnect', () => {
-    console.log("Disconnected from the server")
+socket.on('updateUsers', (users) => {
+    const peopleList = document.createElement('ol')
+    users.forEach((name) => {
+        const listItem = document.createElement('li')
+        listName = document.createTextNode(name)
+        listItem.appendChild(listName)
+        peopleList.appendChild(listItem)
+    })
+    document.querySelector('#users').appendChild(peopleList)
 })
 
 socket.on('newMessage', (message) => {
@@ -55,7 +77,6 @@ document.querySelector('#message-form').addEventListener('submit', (e) => {
 
     if (text.length > 0) {
         socket.emit('createMessage', {
-            from: "User",
             text           
         }, function() {
             inputEl.value = ""
@@ -84,3 +105,8 @@ locationBtn.addEventListener('click', () => {
         alert('Unable to fetch location')
     })    
 })
+
+socket.on('disconnect', () => {
+    console.log("Disconnected from the server")
+})
+
