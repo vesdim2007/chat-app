@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+    crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/styles.css" >
+
+    <title>Chat| Chat App</title>
+  </head>
+    <body class="chat">
+      <div class="chat__sidebar">
+        <h3>People</h3>
+        <div id="users"></div>
+
+      </div>
+      <div class="chat__main">
+          <ul class="chat__messages" id="messages"></ul>
+      
+          <div class="chat__footer">
+            <form id="message-form">
+              <input 
+                id="message-input" 
+                name="message" 
+                type="text" 
+                placeholder="Message"
+                autofocus
+                autocomplete="off"
+              />
+              <button>Send</button>
+            </form>
+    
+            <button id="send-location">Send Location</button>
+          </div>
+      </div> 
+      
+    <script id="message-template" type="text/template">
+      <li class="message">
+        <div class="message__title">
+          <h4>{{from}}</h4>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+            <p>{{text}}</p>
+        </div>
+      </li>    
+    </script>
+    
+    <script id="location-template" type="text/template">
+      <li class="message">
+        <div class="message__title">
+          <h4>{{from}}</h4>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+            <p>
+              <a href="{{url}}" target="_blank">My current location</a>
+            </p>
+        </div>
+      </li>    
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+    <script src="libs/mustache.js"></script>
+    <script src="/js/chat.js"></script>
+    </body>
+</html>
